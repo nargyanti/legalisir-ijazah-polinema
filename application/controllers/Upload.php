@@ -29,7 +29,7 @@ class Upload extends CI_Controller
 			$this->load->view('upload', $error);
 		} else {
 			$data = $this->upload->data();
-			$image_path = base_url('uploads/' . $data['file_name']);
+			$data['image_path'] = base_url('uploads/' . $data['file_name']);
 
 			$pdf_config = [
 				'mode' => 'utf-8',
@@ -46,14 +46,18 @@ class Upload extends CI_Controller
 			$pdf = new \Mpdf\Mpdf($pdf_config);
 
 			// Menambahkan metadata
-			$pdf->SetCreator('Nama Anda');
-			$pdf->SetAuthor('Nama Anda');
+			$pdf->SetCreator('Akademik Polinema');
+			$pdf->SetAuthor('Akademik Polinema');
 			$pdf->SetTitle('Judul Dokumen PDF');
 			$pdf->SetSubject('Deskripsi atau subjek dari dokumen PDF');
 			$pdf->SetKeywords('kata, kunci, untuk, SEO, PDF');
 
+			// Load view ke dalam variabel
+			$html = $this->load->view('pdf_template', $data, true);
+
 			// Menambahkan gambar ke dalam PDF
-			$pdf->WriteHTML('<img src="' . $image_path . '" style="width: 100%; height: auto;">');
+			// $pdf->WriteHTML('<img src="' . $image_path . '" style="width: 100%; height: auto;"><barcode code="https://alumni.polinema.ac.id/" type="QR" class="barcode" size="1.4" error="M" disableborder="1" />');
+			$pdf->WriteHTML($html);
 
 			// Menentukan lokasi dan nama file output PDF
 			$pdf_output = './uploads/' . $data['raw_name'] . '.pdf';
