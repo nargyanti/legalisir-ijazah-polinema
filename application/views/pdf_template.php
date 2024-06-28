@@ -38,7 +38,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <body>
     <div class="qr-code">
         <p>Ditandatangani secara elektronik oleh<br>Wakil Direktur 1</p>
-        <barcode code="Your message here" type="QR" class="barcode" size="0.9" error="M" disableborder="1" />
+        <barcode code="<?php echo $qr_code_url; ?>" type="QR" class="barcode" size="0.9" error="M" disableborder="1" />
         <p>Dr. Dra. Kurnia Ekasari Ak., M.M., CA.</p>
         <p>NIP. 196602141990032002</p>
         <hr>

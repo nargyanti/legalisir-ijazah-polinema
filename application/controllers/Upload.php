@@ -17,6 +17,7 @@ class Upload extends CI_Controller
 
 	public function convert()
 	{
+		// Confirm upload file
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'jpg|jpeg|png';
 		$config['max_size'] = 2048; // 2MB
@@ -29,8 +30,12 @@ class Upload extends CI_Controller
 			$this->load->view('upload', $error);
 		} else {
 			$data = $this->upload->data();
-			$data['image_path'] = base_url('uploads/' . $data['file_name']);
 
+			// Prepare data
+			$data['image_path'] = base_url('uploads/' . $data['file_name']); // output image path
+			$data['qr_code_url'] = 'https://alumni.polinema.ac.id/'; // set QR code URL here
+
+			// Configure mPDF
 			$pdf_config = [
 				'mode' => 'utf-8',
 				'format' => 'A4-L',
@@ -42,30 +47,25 @@ class Upload extends CI_Controller
 				'margin_footer' => 0,
 			];
 
-			// Inisialisasi mPDF dengan konfigurasi yang telah ditentukan
+			// Initialize mPDF
 			$pdf = new \Mpdf\Mpdf($pdf_config);
 
-			// Menambahkan metadata
+			// Set metadata
 			$pdf->SetCreator('Akademik Polinema');
 			$pdf->SetAuthor('Akademik Polinema');
-			$pdf->SetTitle('Judul Dokumen PDF');
-			$pdf->SetSubject('Deskripsi atau subjek dari dokumen PDF');
-			$pdf->SetKeywords('kata, kunci, untuk, SEO, PDF');
+			$pdf->SetTitle('Ijazah Digital Polinema - Nama');
+			$pdf->SetSubject('Insert subject here');
+			$pdf->SetKeywords('Insert keywords here');
 
-			// Load view ke dalam variabel
+			// Load template
 			$html = $this->load->view('pdf_template', $data, true);
-
-			// Menambahkan gambar ke dalam PDF
-			// $pdf->WriteHTML('<img src="' . $image_path . '" style="width: 100%; height: auto;"><barcode code="https://alumni.polinema.ac.id/" type="QR" class="barcode" size="1.4" error="M" disableborder="1" />');
 			$pdf->WriteHTML($html);
 
-			// Menentukan lokasi dan nama file output PDF
+			// Output PDF
 			$pdf_output = './uploads/' . $data['raw_name'] . '.pdf';
-
-			// Menyimpan PDF ke dalam file
 			$pdf->Output($pdf_output, \Mpdf\Output\Destination::FILE);
 
-			// Menampilkan pesan sukses dengan tautan untuk mengunduh PDF
+			// Display success message
 			echo 'PDF generated successfully. <a href="' . base_url('uploads/' . $data['raw_name'] . '.pdf') . '">Download PDF</a>';
 		}
 	}
