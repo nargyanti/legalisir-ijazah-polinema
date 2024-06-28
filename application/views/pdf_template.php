@@ -28,7 +28,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
             margin: 10px 0
         }
 
-        .image {
+        .image-container {
+            width: 100%;
+            text-align: center;
+            margin: 0;
+        }
+
+        img {
             width: 100%;
             height: auto;
         }
@@ -44,7 +50,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <hr>
         <p>Legalisir berlaku sampai dengan<br>31 Juli 2024</p>
     </div>
-    <img class="image" src="<?php echo $image_path; ?>" />
+    <div class="image-container">
+        <img src="<?php echo $image_path; ?>" />
+    </div>
 </body>
 
 </html>
