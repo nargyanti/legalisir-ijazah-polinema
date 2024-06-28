@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Welcome extends CI_Controller
+class Upload extends CI_Controller
 {
 	public function __construct()
 	{
@@ -12,7 +12,7 @@ class Welcome extends CI_Controller
 
 	public function index()
 	{
-		$this->load->view('welcome_message');
+		$this->load->view('upload');
 	}
 
 	public function convert()
@@ -26,7 +26,7 @@ class Welcome extends CI_Controller
 
 		if (!$this->upload->do_upload('image')) {
 			$error = array('error' => $this->upload->display_errors());
-			$this->load->view('welcome_message', $error);
+			$this->load->view('upload', $error);
 		} else {
 			$data = $this->upload->data();
 			$image_path = base_url('uploads/' . $data['file_name']);
